@@ -71,3 +71,12 @@ class CarCl {
 }
 
 const ford = new CarCl('Ford', 120);
+
+// coding challenge 3
+
+class Car2 {
+    constructor(make, speed) {
+        this.make = make,
+        this.speed = speed
+    }
+}
