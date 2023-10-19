@@ -4,6 +4,7 @@
 /////////////////////////////////////////////////
 // BANKIST APP
 
+////////////////////////////////////////////////
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -226,6 +227,13 @@ btnLoan.addEventListener('click', (e) => {
 })
 
 let toggle = true;
+
+//map method
+const amplified = movements.map(elem => {
+  return elem*1.2;
+})
+console.log("amplified", amplified);
+
 //sort movements
 btnSort.addEventListener('click', (e) => {
   e.preventDefault();
@@ -318,3 +326,6 @@ const filter = dogs.filter(isDogEatingOkay);
 console.log(filter);
 const sorted = dogs.slice().sort((a, b) => a.recommendedFood - b.recommendedFood);
 console.log(sorted);
+
+const randomDiceThrow = Array.from({length: 100}, () => Math.ceil(Math.random() * 6));
+console.log(randomDiceThrow);
