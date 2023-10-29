@@ -160,18 +160,42 @@ const updateUI = function (acc) {
 
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, countDown; //to persist between different logins
+
+const startLogoutTimer = function() {
+  // Set time in seconds
+    let time = 30;
+
+    const callbackFn = function() {
+    const min = (String(Math.trunc(time / 60))).padStart(2,0);
+    const sec = (String(time % 60)).padStart(2, 0);
+    // In each call, print the remaining time to UI
+    labelTimer.textContent = `${min} : ${sec}`;
+    // When time = 0, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = `Login to get started`;
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  }
+  //call timer func immediately 
+    callbackFn();
+  // Call timer every second
+    const timer = setInterval(callbackFn, 1000); 
+    return timer;
+}
+
 
 //always logged in
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+//currentAccount = account1;
+//updateUI(currentAccount);
+//containerApp.style.opacity = 100;
 
-
+console.log('countdown', countDown); 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
   e.preventDefault();
-
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value
   );
@@ -195,6 +219,11 @@ btnLogin.addEventListener('click', function (e) {
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+
+    if (countDown) {
+      clearInterval(countDown);
+    }
+    countDown = startLogoutTimer();
 
     // Update UI
     updateUI(currentAccount);
@@ -273,7 +302,7 @@ btnSort.addEventListener('click', function (e) {
   displayMovements(currentAccount.movements, !sorted);
   sorted = !sorted;
 });
-
+/*
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -336,5 +365,18 @@ console.log(future.setFullYear(2040));
 console.log(future.setMonth(1));
 console.log(future.setDate(2)); //sunday is 0
 
-//calculating dates
+//setTimeout
 
+const timer1 = setTimeout((arg1, arg2) => console.log('set time out' + arg1 + arg2), 3000, " for ", '3 seconds'); // can use it for site pop ups
+
+console.log('waiting for set timeout');
+
+clearTimeout(timer1);
+
+//setInterval
+
+const timer2 = setInterval((arg1, arg2) => console.log('set time interval' + arg1 + arg2), 1000, " for ", '3 seconds')
+
+clearTimeout(timer2);
+
+*/
