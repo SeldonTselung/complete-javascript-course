@@ -7,6 +7,8 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const navLinks = document.querySelectorAll('.nav__link');
+const h1 = document.querySelector('h1');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -121,3 +123,102 @@ logo.classList.contains('c'); //returns a boolean
 
 //Don't use because it will overwrite all the existing classes
 logo.className = 'jonas';
+
+//////////////////////////////////////////////////////////
+//smooth scrolling 
+const scroll_btn = document.querySelector(".btn--scroll-to");
+const section1 = document.querySelector('#section--1');
+console.log(section1)
+
+scroll_btn.addEventListener('click', () => {
+  const coords = section1.getBoundingClientRect();
+  window.scrollTo({
+    top: coords.top,
+    left: coords.left,
+    behavior: 'smooth',
+  })
+})
+
+//types of events and event handlers
+
+
+const alertH1 = (e) => {
+  alert('you are reading the header!');
+  h1.removeEventListener('mouseenter', alertH1);
+}
+
+h1.addEventListener('mouseenter', alertH1);
+
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
+
+//Event propagation: bubbling and capturing phases
+
+//Event Delegation: implementing page navigation
+
+////this is an inefficient method because we're adding the same event handler function for each button
+// navLinks.forEach(elem => elem.addEventListener('click', function(e) { 
+//   { e.preventDefault();
+//     const id = this.getAttribute('href');
+//     document.querySelector(id).scrollIntoView({
+//       behavior: 'smooth',
+//     })
+//   }
+// }));
+
+//event delegation should be used because events bubble up and thus  
+//adding event listener to common parent element is more efficient
+
+document.querySelector('.nav__links').addEventListener('click', (e) => { 
+  e.preventDefault();
+  const id = e.target.getAttribute('href');
+  if (id && id !=='#') {
+    document.querySelector(id).scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
+});
+
+//DOM traversing 
+
+//Going downwards: child 
+console.log(h1.querySelectorAll('.highlight'));// finds children no matter how deep
+console.log(h1.childNodes); //returns all child nodes
+console.log(h1.children); //returns HTML collection of direct children
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+//Going upwards: parents
+console.log(h1.parentNode); 
+console.log(h1.parentElement); 
+
+//.closest(.matching selector) gives the closest element with the specified selector and is very helpful in event delegation
+h1.closest('.header').style.background = 'var(--gradient-secondary)'
+
+//Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+console.log(h1.parentElement.children);
+
+// Tabbed components
+const operationsBtns = document.querySelectorAll('.operations__tab');
+const operationsBtnsContainer = document.querySelector('.operations__tab-container');
+const operationsContentContainer = document.querySelectorAll('.operations__content');
+
+operationsBtnsContainer.addEventListener('click', (e) => {
+  const clicked = e.target.closest('.operations__tab');
+  console.log(clicked);
+  if (!clicked) return;
+  //active and inactive tab
+  operationsBtns.forEach(tab => tab.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+  //activate content for tab
+  operationsContentContainer.forEach(content => content.classList.remove('operations__content--active'));
+  const content = document.querySelector(`.operations__content--${clicked.dataset.tab}`);
+  console.log(content);
+  content.classList.add('operations__content--active');
+});
+
+//
+
