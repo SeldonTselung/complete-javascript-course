@@ -192,7 +192,7 @@ console.log(h1.parentNode);
 console.log(h1.parentElement); 
 
 //.closest(.matching selector) gives the closest element with the specified selector and is very helpful in event delegation
-h1.closest('.header').style.background = 'var(--gradient-secondary)'
+//h1.closest('.header').style.background = 'var(--gradient-secondary)'
 
 //Going sideways: siblings
 console.log(h1.previousElementSibling);
@@ -220,5 +220,22 @@ operationsBtnsContainer.addEventListener('click', (e) => {
   content.classList.add('operations__content--active');
 });
 
-//
+//intersection observer API
+
+const obsCallback = function(entries, observer) {
+  entries.forEach(entry => {
+    console.log(entry);
+  });
+};
+
+const obsOptions = {
+  //root is the element that the target is intersecting
+  root: null, //null means viewport
+  threshold: 0.1, //section is intersecting root at 10%
+}
+
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(section1);
+
+
 
